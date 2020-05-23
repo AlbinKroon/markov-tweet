@@ -20,14 +20,14 @@ if (port == null || port == "")
     port = 3000
 
 app.get("/", function(req, res) {
-    res.sendFile("/home/albin/Documents/SideProjects/markov-tweet/index.html", function (err) {
+    res.sendFile(__dirname + "/index.html", function (err) {
 	if (err)
 	    throw(err);
     });
 });
 
 app.get("/client.js", function(req, res) {
-    res.sendFile("/home/albin/Documents/SideProjects/markov-tweet/client.js", function (err) {
+    res.sendFile(__dirname + "/client.js", function (err) {
 	if (err)
 	    throw(err);
     });
