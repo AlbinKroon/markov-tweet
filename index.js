@@ -16,7 +16,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 var m = new MarkovChain();
 
 const hostname = '127.0.0.1';
-const port = 3000;
+const port = process.env.PORT;
+if (port == null || port == "")
+    port = 3000
 
 app.get("/", function(req, res) {
     res.sendFile("/home/albin/Documents/SideProjects/markov-tweet/index.html", function (err) {
