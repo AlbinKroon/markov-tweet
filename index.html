@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Twitter Markov</title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="text-left font-weight-bold text-monospace display-4">Markov tweet generation</h1>
+      <form id="handle">
+	<label class="text-monospace font-weight-light" for="name">Twitter handle:</label><br>
+	<div class="input-group mb-3">
+	  <div class="input-group-prepend">
+	    <span class="input-group-text" id="basic-addon1">@</span>
+	  </div>
+	  <input type="text" class="form-control" name="name" id="name" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"><br>
+	</div>
+	<input class="btn btn-outline-secondary" type="submit" value="Submit handle">
+	<button class="btn btn-outline-primary" type="button" id="newTweet" v-on:click="getTweet">New tweet!</button>
+      </form><br>
+      <div id="tweet" class="alert alert-info" role="alert"></div>
+    </div>
+  </body>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="/client.js"></script>
+</html>
