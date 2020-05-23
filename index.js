@@ -15,7 +15,6 @@ const app = new express();
 app.use(bodyParser.urlencoded({extended: true}));
 var m = new MarkovChain();
 
-const hostname = '127.0.0.1';
 var port = process.env.PORT;
 if (port == null || port == "")
     port = 3000
@@ -77,4 +76,4 @@ var useUpperCase = function(wordList) {
   return tmpList[~~(Math.random()*tmpList.length)]
 }
 
-app.listen(port, hostname);
+app.listen(port);
