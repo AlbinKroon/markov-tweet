@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 var m = new MarkovChain();
 
 const hostname = '127.0.0.1';
-const port = process.env.PORT;
+var port = process.env.PORT;
 if (port == null || port == "")
     port = 3000
 
