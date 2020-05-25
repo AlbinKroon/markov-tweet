@@ -3,13 +3,15 @@ var MarkovChain = require('markovchain');
 const express = require('express');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+dotenv.config();
 
 
 var T = new Twit({
-    consumer_key: ***REMOVED***,
-    consumer_secret: ***REMOVED***,
-    access_token: ***REMOVED***,
-    access_token_secret: ***REMOVED***,
+    consumer_key: process.env.CONSUMER_KEY,
+    consumer_secret: process.env.CONSUMER_SECRET,
+    access_token: process.env.ACCESS_TOKEN,
+    access_token_secret: process.env.ACCESS_TOKEN_SECRET,
 });
 const app = new express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -36,7 +38,7 @@ app.get("/client.js", function(req, res) {
 app.post("/new/user",function(req, res) {
     var user=req.body.name;
     m = new MarkovChain()
-    T.get('search/tweets', {q: "from:"+user, count: 100}, function(err, data, rs) {
+    T.get('search/tweets', {q: "from:"+user+" since:2015-01-01", count: 100}, function(err, data, rs) {
 	const len = data.statuses.length;
 	console.log(len)
 	for(var i=0;i<len;i++) {
