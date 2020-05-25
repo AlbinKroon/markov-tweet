@@ -1,8 +1,10 @@
+var message = ""
+
 $(function() {
     $("#handle").submit(function(event) {	
 	// Stop form from submitting normally
 	event.preventDefault();
-	var message = $(this).serialize();
+	message = $(this).serialize();
 	// Send the data using post
 	var posting = $.post("/new/user", message);
 	
@@ -13,15 +15,12 @@ $(function() {
     });
 });
 
-var tweet = new Vue({
-    el: "#tweet",
-})
-
 var newTweet = new Vue({
     el: "#newTweet",
     methods: {
 	getTweet: function() {
-	    var posting = $.post("/new/tweet");
+	    if (message == "") return;
+	    var posting = $.post("/new/tweet", message);
 	    
 	    posting.done(function(data) {
 		generateTweet(data)
