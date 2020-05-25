@@ -1,5 +1,5 @@
-var Twit = require('twit');
-var MarkovChain = require('markovchain');
+const Twit = require('twit');
+const MarkovChain = require('markovchain');
 const express = require('express');
 const fs = require('fs');
 const bodyParser = require('body-parser');
@@ -12,6 +12,7 @@ var T = new Twit({
     access_token: process.env.ACCESS_TOKEN,
     access_token_secret: process.env.ACCESS_TOKEN_SECRET,
 });
+
 const app = new express();
 app.use(bodyParser.urlencoded({extended: true}));
 var chains = {}
@@ -40,10 +41,12 @@ app.post("/new/user",function(req, res) {
 	res.send(generateTweet(chains[user]));
 	return;
     }
-    chains[user] = new MarkovChain()
-    T.get('search/tweets', {q: "from:"+user+" since:2015-01-01", count: 100}, function(err, data, rs) {
+    var query = "from:"+user+" since:2015-01-01 -filter:retweets"
+    T.get('search/tweets', {q: query, count: 100}, function(err, data, rs) {
 	const len = data.statuses.length;
 	console.log(len)
+	states = []
+	chains[user] = new MarkovChain()
 	for(var i=0;i<len;i++) {
 	    chains[user].parse(cleanTweet(data.statuses[i].text));
 	}
@@ -64,25 +67,32 @@ const cleanTweet = function(tweet) {
     var res = [];
     for (var i=0;i<str.length;i++) {
 	var word = str[i]
-	if (!(word.startsWith("@") ||
-	    word.startsWith("http") ||
-	    word.endsWith("\u2026")))
-	    res.push(word);
+	if (!(word.startsWith("@")   ||
+	      word.startsWith("\(")   ||
+	      word.startsWith("#")   ||
+	      word.includes("http")||
+	      word.startsWith("...") ||
+	      word.endsWith("\u2026")))
+	    res.push(word.replace(/[^a-zA-Z 0-9'.,!-/]+/g, ''));
     }
     return res.join(" ");
 }
 
 const generateTweet = function(m) {
     return m.start(useUpperCase).end(
-	function(sentence) {return sentence.length>=140}
+	function(sentence) {return sentence.length >= 140}
     ).process();
 }
 
 var useUpperCase = function(wordList) {
-  var tmpList = Object.keys(wordList).filter(function(word) {
-    return word[0] >= 'A' && word[0] <= 'Z'
-  })
-  return tmpList[~~(Math.random()*tmpList.length)]
+    var tmpList = Object.keys(wordList).filter(function(word) {
+	return isUpperCase(word[0])
+    })
+    return tmpList[~~(Math.random()*tmpList.length)]
+}
+
+var isUpperCase = function(chr) {
+    return chr >= 'A' && chr <= 'Z'
 }
 
 app.listen(port);
